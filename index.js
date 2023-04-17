@@ -13,7 +13,8 @@ app.use('/blog',blogRouter)
 const port=process.env.port;
 
 app.get('/',(req,res)=>{
-    res.send('blogs Homepage');
+    res.sendFile(__dirname+'/public/index.html')
+    // res.send('blogs Homepage');
 })
 
 // app.get('/',(req,res)=>{

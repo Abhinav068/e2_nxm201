@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blogs Homepage</title>
+    <style>
+        #container {
+            display: flex;
+            justify-content: space-between;
+            padding: 1em;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Welcome to Blogs </h1>
+    <div>
+        <button onclick="getposts()">See All your Posts</button>
+        <button onclick="createposts()">Create a new post </button>
+        <button onclick="signup('user')">User Signup</button>
+        <button onclick="signup('admin')">Admin Signup</button>
+        <button onclick="login('user')">User Login</button>
+        <button onclick="login('admin')">Admin Login</button>
+
+    </div>
+    <div id="container">
+        <div id="result">
+            <p>helele</p>
+        </div>
+
+        <div id="create">
+            <!-- <form id="form">
+                <textarea name="blog" id="blog" cols="20" rows="10"></textarea>
+                <input type="submit" value="Submit karo">
+            </form> -->
+        </div>
+
+    </div>
+</body>
+
+</html>
+<script>
+    let url="http://localhost:8080/";
+    let method='GET';
+
+    function signup(p) {
+        window.location.href = `signup.html?q=${p}`;
+    }
+    function login(p) {
+        window.location.href = `login.html?q=${p}`;
+    }
+
+    async function getposts() {
+        const data = await fetch(url+'blog')
+        const posts = await data.json();
+        console.log(posts);
+    }
+
+    
+
+    function createposts(id) {
+        document.getElementById('create').innerHTML = `<form id="form" data-id=${id||0}>
+                <textarea name="blog" id="blog" cols="40" rows="10" placeholder="Write or update your blog here"></textarea>
+                <input type="submit" value="Submit ">
+            </form>`
+
+        document.getElementById('form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            console.log(e.target.blog.value);
+
+            let payload = { data: e.target.blog.value,};
+            if(id){
+                url=url+`blog/updateblog/${id}`;
+                method='PUT';
+            }
+            else{
+                url=url+"blog/create";
+                method="POST";
+            }
+            let data = await fetch(url, {
+                method,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            })
+            let result = await data.json();
+            console.log(result);
+        })
+    }
+
+</script>

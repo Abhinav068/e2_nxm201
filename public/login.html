@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login page </title>
+</head>
+
+<body>
+    <form id="login-form">
+        <label for="email">Enter your mail:</label><br>
+        <input type="email" id="email" name="email" , required><br>
+        <label for="password">Enter your password:</label><br>
+        <input type="password" id="password" name="password" , required><br>
+        <input type="submit" name="Login">
+    </form>
+</body>
+
+</html>
+
+<script>
+    const query = new URLSearchParams(window.location.search)
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        // console.log(e.target.email.value);
+        // console.log(e.target.password.value);
+        let payload = { email: e.target.email.value, password: e.target.password.value };
+
+        let data = await fetch('http://localhost:8080/user/signup', {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        })
+        let result = await data.json();
+        console.log(result);
+    })
+</script>
